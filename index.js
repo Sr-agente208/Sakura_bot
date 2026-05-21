@@ -185,6 +185,86 @@ const rl = readline.createInterface({ input: process.stdin, output: process.stdo
 const question = (text) => new Promise((resolve) => rl.question(text, resolve));
 
 async function startBot() {
+  const {
+  default: makeWASocket,
+  useMultiFileAuthState,
+  fetchLatestBaileysVersion
+} = require('@whiskeysockets/baileys')
+
+const fs = require('fs')
+const chalk = require('chalk')
+
+let prefix = "."
+
+// 🔥 START BOT
+async function startBot() {
+  const { state, saveCreds } = await useMultiFileAuthState('./session')
+  const { version } = await fetchLatestBaileysVersion()
+
+  const sock = makeWASocket({
+    version,
+    auth: state,
+    printQRInTerminal: true
+  })
+
+  sock.ev.on('creds.update', saveCreds)
+
+  console.log(chalk.green("🤖 BOT ONLINE"))
+
+  // 💬 MENSAGENS
+  sock.ev.on('messages.upsert', async ({ messages }) => {
+    try {
+      const info = messages[0]
+      if (!info.message) return
+
+      const from = info.key.remoteJid
+      const isGroup = from.endsWith("@g.us")
+
+      const body =
+        info.message.conversation ||
+        info.message.extendedTextMessage?.text ||
+        ""
+
+      const isCmd = body.startsWith(prefix)
+      const command = isCmd ? body.slice(1).trim().split(" ")[0] : ""
+      const args = isCmd ? body.trim().split(/ +/).slice(1) : []
+
+      const sockSend = (text) => {
+        sock.sendMessage(from, { text }, { quoted: info })
+      }
+
+      // 🔥 SWITCH DE COMANDOS
+      if (isCmd) {
+        switch (command.toLowerCase()) {
+
+          case "ping":
+            return sockSend("🏓 Pong!")
+
+          case "menu":
+            return sockSend("🤖 MENU DO BOT\n\n.ping\n.menu")
+
+          case "id":
+            return sockSend(`🆔 ${from}`)
+
+          default:
+            return sockSend("❌ Comando não existe")
+        }
+      }
+
+      // 💡 CHAT NORMAL (sem prefixo)
+      if (body.toLowerCase() === "oi") {
+        return sockSend("Salve 😎")
+      }
+
+    } catch (e) {
+      console.log("Erro:", e)
+    }
+  })
+}
+
+// 🔥 INICIAR
+startBot()
+
   try {
 const { state, saveCreds } = await useMultiFileAuthState('./conexão');
 const { version } = await fetchLatestBaileysVersion();
