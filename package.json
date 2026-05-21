@@ -17,7 +17,6 @@
     "@whiskeysockets/baileys": "^7.0.0-rc12",
     "archiver": "^7.0.1",
     "axios": "^1.13.6",
-    "baileys": "^7.0.0-rc.9",
     "buffer-crc32": "^1.0.0",
     "cache-manager": "^7.2.8",
     "cfonts": "^3.3.1",
