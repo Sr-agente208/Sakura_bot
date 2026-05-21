@@ -11,7 +11,7 @@ makeCacheableSignalKeyStore,
 downloadContentFromMessage,
 prepareWAMessageMedia,
 generateWAMessageFromContent,
-proto } = require("baileys");
+const { default: makeWASocket, useMultiFileAuthState, fetchLatestBaileysVersion } = require('@whiskeysockets/baileys')
 
 //————| ⚙️ MODULES ⚙️ |————// 
 const fs = require('fs');
