@@ -37,5 +37,14 @@
     "prompt-sync": "^4.2.0",
     "yt-search": "^2.13.1",
     "ytdl-core": "^4.11.5"
-  }
+  },
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Sr-agente208/Sakura_bot.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Sr-agente208/Sakura_bot/issues"
+  },
+  "homepage": "https://github.com/Sr-agente208/Sakura_bot#readme"
 }
